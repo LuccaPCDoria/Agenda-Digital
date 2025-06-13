@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Agenda Digital - Dashboard</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <nav class="sidebar">
+            <h3>Agenda Digital</h3>
+            <ul>
+                <li>
+                    <a href="#" data-section="dashboardSection">📊 Dashboard</a>
+                </li>
+                <li>
+                    <a href="#" data-section="agendaSection">📅 Agenda</a>
+                </li>
+                <li>
+                    <a href="#" data-section="tarefasSection">✅ Tarefas</a>
+                </li>
+                <li>
+                    <a href="#" data-section="notasSection">📝 Notas</a>
+                </li>
+                <li>
+                    <a href="#" data-section="metasSection">
+                        🎯 Metas & Lembretes
+                    </a>
+                </li>
+                <li>
+                    <a href="#" data-section="ideiasSection">💡 Ideias</a>
+                </li>
+                <li><button id="logoutBtn">Sair</button></li>
+            </ul>
+            <button class="toggle-theme" id="themeToggle">
+                🌙 Modo Escuro
+            </button>
+        </nav>
+
+        <main class="main-content">
+            <h1>Bem-vindo(a), <span id="usuarioNome"></span>!</h1>
+            <p>Email: <span id="emailUsuario"></span></p>
+            <section id="dashboardSection">
+                <h2>Painel do Dia</h2>
+                <p>Aqui você verá suas tarefas, compromissos e notas do dia.</p>
+            </section>
+            <section id="tarefasSection" style="display: none">
+                <h2>✅ Minhas Tarefas</h2>
+                <form id="novaTarefaForm">
+                    <input
+                        type="text"
+                        id="tituloTarefa"
+                        placeholder="Digite a nova tarefa"
+                        required
+                    />
+                    <select id="prioridadeTarefa">
+                        <option value="Alta">Alta</option>
+                        <option value="Média">Média</option>
+                        <option value="Baixa">Baixa</option>
+                    </select>
+                    <button type="submit">Adicionar</button>
+                </form>
+                <ul id="listaTarefas"></ul>
+            </section>
+            <section id="notasSection" style="display: none">
+                <h2>📝 Minhas Notas</h2>
+                <form id="novaNotaForm">
+                    <input
+                        type="text"
+                        id="tituloNota"
+                        placeholder="Título da nota"
+                        required
+                    />
+                    <textarea
+                        id="conteudoNota"
+                        placeholder="Digite sua anotação..."
+                        required
+                    ></textarea>
+                    <button type="submit">Salvar Nota</button>
+                </form>
+                <div id="listaNotas"></div>
+            </section>
+            <section id="agendaSection" style="display: none">
+                <h2>📅 Agenda do Dia</h2>
+                <form id="novaAgendaForm">
+                    <input
+                        type="text"
+                        id="tituloCompromisso"
+                        placeholder="Título do compromisso"
+                        required
+                    />
+                    <input type="time" id="horaInicio" required />
+                    <input type="time" id="horaFim" required />
+                    <input type="date" id="dataAgenda" />
+                    <button type="submit">Agendar</button>
+                </form>
+                <ul id="listaAgenda"></ul>
+            </section>
+            <section id="metasSection" style="display: none">
+                <h2>🎯 Minhas Metas & Lembretes</h2>
+                <form id="novaMetaForm">
+                    <input
+                        type="text"
+                        id="tituloMeta"
+                        placeholder="Digite a meta/lembrete"
+                        required
+                    />
+                    <select id="tipoMeta">
+                        <option value="meta">Meta</option>
+                        <option value="lembrete">Lembrete</option>
+                    </select>
+                    <input type="date" id="prazoMeta" required />
+                    <button type="submit">Salvar</button>
+                </form>
+                <ul id="listaMetas"></ul>
+            </section>
+            <section id="ideiasSection" style="display: none">
+                <h2>💡 Minhas Ideias</h2>
+                <p>Em breve...</p>
+            </section>
+        </main>
+
+        <script type="module" src="dashboard.js"></script>
+    </body>
+</html>
