@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Login - Agenda Digital</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body class="login-page">
+        <div class="auth-container">
+            <h2 id="formTitle">Login</h2>
+            <form id="authForm">
+                <input
+                    type="text"
+                    id="nome"
+                    placeholder="Nome completo"
+                    style="display: none"
+                />
+                <input type="email" id="email" placeholder="Email" required />
+                <input
+                    type="password"
+                    id="senha"
+                    placeholder="Senha"
+                    required
+                />
+                <button type="submit">Entrar</button>
+            </form>
+            <p id="toggleMode">
+                Ainda não tem conta? <a href="#">Cadastre-se</a>
+            </p>
+        </div>
+
+        <script type="module" src="auth.js"></script>
+    </body>
+</html>
