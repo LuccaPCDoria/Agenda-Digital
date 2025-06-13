@@ -54,7 +54,7 @@ verificarLembretesHoje();
 // SCRIPT DE TAREFAS
 // ==============================================
 
-import { supabase } from "./js/supabase.js";
+import { supabase } from "./supabase.js";
 
 // Referências dos elementos
 const formTarefa = document.getElementById("novaTarefaForm");
