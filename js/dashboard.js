@@ -23,6 +23,28 @@ document.getElementById("logoutBtn").addEventListener("click", () => {
 });
 
 // ==============================================
+// BOTÃO DA RETRAÇÃO/EXPANSÃO DA BARRA LATERAL
+// ==============================================
+
+// Alterna a sidebar entre aberta e fechada
+document.getElementById("toggleSidebarBtn").addEventListener("click", () => {
+    document.querySelector(".sidebar").classList.toggle("sidebar-fechada");
+});
+
+// ==============================================
+// FUNÇÃO PARA FORMATAR DATA
+// ==============================================
+
+function dataAtualFormatada() {
+    var data = new Date(),
+        dia = data.getDate().toString(),
+        diaF = dia.length == 1 ? "0" + dia : dia,
+        mes = (data.getMonth() + 1).toString(), //+1 pois no getMonth Janeiro começa com zero.
+        mesF = mes.length == 1 ? "0" + mes : mes,
+        anoF = data.getFullYear();
+    return diaF + "/" + mesF + "/" + anoF;
+}
+// ==============================================
 // SCRIPT DE LEMBRETES
 // ==============================================
 
@@ -78,11 +100,16 @@ async function carregarTarefas() {
     data.forEach((tarefa) => {
         const item = document.createElement("li");
         item.innerHTML = `
-      <input type="checkbox" ${tarefa.status ? "checked" : ""} data-id="${
-            tarefa.id
-        }" />
-      ${tarefa.titulo} <small>[${tarefa.prioridade}]</small>
-      <button data-del="${tarefa.id}">🗑️</button>
+        <label class="checkbox-wrapper">
+        <input type="checkbox" id="exemploCheckbox" ${
+            tarefa.status ? "checked" : ""
+        } data-id="${tarefa.id}" />
+        <span class="checkmark"></span>
+        ${tarefa.titulo} <small>[${tarefa.prioridade}]</small>
+        
+        </label>
+        <button data-del="${tarefa.id}">🗑️</button>
+    
     `;
         listaTarefas.appendChild(item);
     });
@@ -132,6 +159,145 @@ listaTarefas.addEventListener("click", async (e) => {
 
 // Carregar ao iniciar
 carregarTarefas();
+
+// ==============================================
+// SCRIPT DE METAS
+// ==============================================
+
+const formMeta = document.getElementById("novaMetaForm");
+const listaMetas = document.getElementById("listaMetas");
+
+formMeta.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const titulo = document.getElementById("tituloMeta").value;
+    const tipo = document.getElementById("tipoMeta").value;
+    const prazo = document.getElementById("prazoMeta").value;
+
+    await supabase.from("goals").insert([
+        {
+            user_id: usuario.id,
+            titulo,
+            tipo,
+            prazo,
+            feito: false,
+        },
+    ]);
+
+    formMeta.reset();
+    carregarMetas();
+});
+
+async function carregarMetas() {
+    const { data, error } = await supabase
+        .from("goals")
+        .select("*")
+        .eq("user_id", usuario.id)
+        .order("prazo", { ascending: true });
+
+    listaMetas.innerHTML = "";
+    data.forEach((meta) => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+        <label class="checkbox-wrapper">
+        <input type="checkbox" id="exemploCheckbox" ${
+            meta.feito ? "checked" : ""
+        } data-id-meta="${meta.id}"/>
+        <span class="checkmark"></span>
+        ${meta.titulo} <small>(${meta.tipo} - ${meta.prazo})</small>
+        </label>
+        <button data-del="${meta.id}">🗑️</button>
+    `;
+        listaMetas.appendChild(li);
+    });
+}
+
+listaMetas.addEventListener("change", async (e) => {
+    const id = e.target.dataset.idMeta;
+    const feito = e.target.checked;
+    await supabase.from("goals").update({ feito }).eq("id", id);
+});
+
+// Deletar tarefa
+listaMetas.addEventListener("click", async (e) => {
+    if (e.target.tagName === "BUTTON") {
+        const id = e.target.dataset.del;
+        await supabase.from("goals").delete().eq("id", id);
+        carregarMetas();
+    }
+});
+
+carregarMetas();
+
+// ==============================================
+// SCRIPT DE AGENDA
+// ==============================================
+
+const formAgenda = document.getElementById("novaAgendaForm");
+const listaAgenda = document.getElementById("listaAgenda");
+document
+    .getElementById("dataAgenda")
+    .addEventListener("change", carregarAgenda);
+
+async function carregarAgenda() {
+    const data =
+        document.getElementById("dataAgenda").value ||
+        new Date().toISOString().split("T")[0];
+
+    const { data: compromissos, error } = await supabase
+        .from("schedule")
+        .select("*")
+        .eq("user_id", usuario.id)
+        .eq("data", data)
+        .order("hora_ini", { ascending: true });
+
+    listaAgenda.innerHTML = "";
+    compromissos.forEach((item) => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+
+        <label class="checkbox-wrapper">
+        
+            <p><strong> ${item.data}: <br> ${item.hora_ini} - ${item.hora_fim}</strong> - ${item.titulo}</p>
+        </label>
+        <button data-del-agenda="${item.id}" >🗑️</button>
+    `;
+        listaAgenda.appendChild(li);
+    });
+}
+
+formAgenda.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const titulo = document.getElementById("tituloCompromisso").value;
+    const hora_ini = document.getElementById("horaInicio").value;
+    const hora_fim = document.getElementById("horaFim").value;
+    const data = new Date().toISOString().split("T")[0];
+
+    const { error } = await supabase.from("schedule").insert([
+        {
+            user_id: usuario.id,
+            titulo,
+            hora_ini,
+            hora_fim,
+            data,
+        },
+    ]);
+
+    if (error) return alert("Erro ao agendar: " + error.message);
+    formAgenda.reset();
+    carregarAgenda();
+});
+
+listaAgenda.addEventListener("click", async (e) => {
+    if (e.target.dataset.delAgenda) {
+        await supabase
+            .from("schedule")
+            .delete()
+            .eq("id", e.target.dataset.delAgenda);
+        carregarAgenda();
+    }
+});
+
+carregarAgenda();
 
 // ==============================================
 // SCRIPT DE NOTAS
@@ -196,128 +362,6 @@ listaNotas.addEventListener("click", async (e) => {
 carregarNotas();
 
 // ==============================================
-// SCRIPT DE AGENDA
-// ==============================================
-
-const formAgenda = document.getElementById("novaAgendaForm");
-const listaAgenda = document.getElementById("listaAgenda");
-document
-    .getElementById("dataAgenda")
-    .addEventListener("change", carregarAgenda);
-
-async function carregarAgenda() {
-    const data =
-        document.getElementById("dataAgenda").value ||
-        new Date().toISOString().split("T")[0];
-
-    const { data: compromissos, error } = await supabase
-        .from("schedule")
-        .select("*")
-        .eq("user_id", usuario.id)
-        .eq("data", data)
-        .order("hora_ini", { ascending: true });
-
-    listaAgenda.innerHTML = "";
-    compromissos.forEach((item) => {
-        const li = document.createElement("li");
-        li.innerHTML = `
-      <strong>${item.hora_ini} - ${item.hora_fim}</strong>: ${item.titulo}
-      <button data-del-agenda="${item.id}">🗑️</button>
-    `;
-        listaAgenda.appendChild(li);
-    });
-}
-
-formAgenda.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const titulo = document.getElementById("tituloCompromisso").value;
-    const hora_ini = document.getElementById("horaInicio").value;
-    const hora_fim = document.getElementById("horaFim").value;
-    const data = new Date().toISOString().split("T")[0];
-
-    const { error } = await supabase.from("schedule").insert([
-        {
-            user_id: usuario.id,
-            titulo,
-            hora_ini,
-            hora_fim,
-            data,
-        },
-    ]);
-
-    if (error) return alert("Erro ao agendar: " + error.message);
-    formAgenda.reset();
-    carregarAgenda();
-});
-
-listaAgenda.addEventListener("click", async (e) => {
-    if (e.target.dataset.delAgenda) {
-        await supabase
-            .from("schedule")
-            .delete()
-            .eq("id", e.target.dataset.delAgenda);
-        carregarAgenda();
-    }
-});
-
-carregarAgenda();
-
-// ==============================================
-// SCRIPT DE METAS
-// ==============================================
-
-const formMeta = document.getElementById("novaMetaForm");
-const listaMetas = document.getElementById("listaMetas");
-
-formMeta.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const titulo = document.getElementById("tituloMeta").value;
-    const tipo = document.getElementById("tipoMeta").value;
-    const prazo = document.getElementById("prazoMeta").value;
-
-    await supabase.from("goals").insert([
-        {
-            user_id: usuario.id,
-            titulo,
-            tipo,
-            prazo,
-            feito: false,
-        },
-    ]);
-
-    formMeta.reset();
-    carregarMetas();
-});
-
-async function carregarMetas() {
-    const { data, error } = await supabase
-        .from("goals")
-        .select("*")
-        .eq("user_id", usuario.id)
-        .order("prazo", { ascending: true });
-
-    listaMetas.innerHTML = "";
-    data.forEach((meta) => {
-        const li = document.createElement("li");
-        li.innerHTML = `
-      <input type="checkbox" ${meta.feito ? "checked" : ""} data-id-meta="${
-            meta.id
-        }" />
-      ${meta.titulo} <small>(${meta.tipo} - ${meta.prazo})</small>
-    `;
-        listaMetas.appendChild(li);
-    });
-}
-
-listaMetas.addEventListener("change", async (e) => {
-    const id = e.target.dataset.idMeta;
-    const feito = e.target.checked;
-    await supabase.from("goals").update({ feito }).eq("id", id);
-});
-
-carregarMetas();
-
-// ==============================================
 // SCRIPT PARA TROCAR AS SEÇÕES
 // ==============================================
 
@@ -346,13 +390,25 @@ links.forEach((link) => {
 // SCRIPT DO MODO ESCURO
 // ==============================================
 
-const btnToggle = document.getElementById("themeToggle");
+// ==============================================
+// SCRIPT DO MODO ESCURO
+// ==============================================
+const btnToggle = document.getElementById("theme-toggle");
+const icon = btnToggle.querySelector(".theme-icon");
+const label = btnToggle.querySelector(".theme-label");
 
 btnToggle.addEventListener("click", () => {
     document.body.classList.toggle("dark-mode");
-    const modo = document.body.classList.contains("dark-mode");
-    btnToggle.textContent = modo ? "☀️ Modo Claro" : "🌙 Modo Escuro";
-});
+    const dark = document.body.classList.contains("dark-mode");
 
+    // Atualiza o ícone
+    icon.textContent = dark ? "☀️" : "🌙";
+
+    // Atualiza o texto (somente se sidebar não estiver retraída)
+    const sidebar = document.querySelector(".sidebar");
+    if (!sidebar.classList.contains("sidebar-fechada")) {
+        label.textContent = dark ? "Modo Claro" : "Modo Escuro";
+    }
+});
 // Ativar dashboard na sessão inicial
 document.getElementById("dashboardSection").style.display = "block";

@@ -1,0 +1,41 @@
+/* ===================================================
+   VARIÁVEIS GLOBAIS DE CORES E FONTES
+=================================================== */
+:root {
+    --font-base: "Poppins", sans-serif;
+    --clr-bg: #f4f6f8;
+    --clr-text: #2c3e50;
+    --clr-primary: #2ecc71;
+    --clr-secondary: #34495e;
+    --clr-accent: #f39c12;
+    --clr-card: #ffffff;
+    --clr-border: #e0e0e0;
+}
+
+body.dark-mode {
+    --clr-bg: #121212;
+    --clr-text: #ecf0f1;
+    --clr-primary: #27ae60;
+    --clr-secondary: #1e1e1e;
+    --clr-card: #1f1f1f;
+    --clr-border: #333;
+}
+
+/* ===================================================
+   RESET E BASE GLOBAL
+=================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style: none;
+}
+
+body {
+    font-family: var(--font-base);
+    background-color: var(--clr-bg);
+    color: var(--clr-text);
+    display: flex;
+    min-height: 100dvh;
+    overflow-x: hidden;
+}

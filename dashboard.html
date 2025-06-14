@@ -4,40 +4,92 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Agenda Digital - Dashboard</title>
+
+        <!-- Fonte Poppins -->
+        <link
+            href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="css/global.css" />
+        <!-- Novo estilo -->
         <link rel="stylesheet" href="css/style.css" />
+        <style></style>
     </head>
     <body>
         <nav class="sidebar">
-            <h3>Agenda Digital</h3>
+            <!-- Botão de retração com ícone SVG -->
+
+            <button
+                id="toggleSidebarBtn"
+                class="sidebar-toggle"
+                aria-label="Abrir/Fechar menu"
+            >
+                <!-- Ícone de menu hamburguer -->
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24"
+                    width="24"
+                    fill="white"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        d="M3 6h18M3 12h18M3 18h18"
+                        stroke="white"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                    />
+                </svg>
+            </button>
+
+            <!-- Itens do menu -->
             <ul>
                 <li>
-                    <a href="#" data-section="dashboardSection">📊 Dashboard</a>
+                    <a href="#" data-section="dashboardSection"
+                        >📊 <span>Dashboard</span></a
+                    >
                 </li>
                 <li>
-                    <a href="#" data-section="agendaSection">📅 Agenda</a>
+                    <a href="#" data-section="tarefasSection"
+                        >✅ <span>Tarefas</span></a
+                    >
                 </li>
                 <li>
-                    <a href="#" data-section="tarefasSection">✅ Tarefas</a>
+                    <a href="#" data-section="metasSection"
+                        >🎯 <span>Metas</span></a
+                    >
                 </li>
                 <li>
-                    <a href="#" data-section="notasSection">📝 Notas</a>
+                    <a href="#" data-section="agendaSection"
+                        >📅 <span>Agenda</span></a
+                    >
+                </li>
+
+                <li>
+                    <a href="#" data-section="notasSection"
+                        >📝 <span>Notas</span></a
+                    >
+                </li>
+
+                <li>
+                    <a href="#" data-section="ideiasSection"
+                        >💡 <span>Ideias</span></a
+                    >
                 </li>
                 <li>
-                    <a href="#" data-section="metasSection">
-                        🎯 Metas & Lembretes
-                    </a>
+                    <a href="#" id="logoutBtn">🚪 <span>Sair</span></a>
                 </li>
-                <li>
-                    <a href="#" data-section="ideiasSection">💡 Ideias</a>
-                </li>
-                <li><button id="logoutBtn">Sair</button></li>
             </ul>
-            <button class="toggle-theme" id="themeToggle">
-                🌙 Modo Escuro
+
+            <!-- Botão modo escuro -->
+            <button id="theme-toggle" class="toggle-theme">
+                <icon class="theme-icon">🌙</icon>
+                <span class="theme-label">Modo Escuro</span>
             </button>
         </nav>
 
         <main class="main-content">
+            <!-- Nome do sistema -->
+            <h1 class="logo-text">Agenda Digital</h1>
             <h1>Bem-vindo(a), <span id="usuarioNome"></span>!</h1>
             <p>Email: <span id="emailUsuario"></span></p>
             <section id="dashboardSection">

@@ -1,0 +1,70 @@
+.pagina-login-cadastro {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: var(--clr-bg);
+}
+
+.auth-card {
+    background: var(--clr-card);
+    border: 1px solid var(--clr-border);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    width: 100%;
+    min-width: 400px;
+    text-align: center;
+}
+
+.auth-card h2 {
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+.auth-card input {
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 1px solid var(--clr-border);
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+.auth-card button {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: var(--clr-primary);
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.auth-card button:hover {
+    background-color: #27ae60;
+}
+.auth-card form {
+    display: grid;
+}
+#toggleMode {
+    margin-top: 1rem;
+    font-size: 0.95rem;
+}
+
+#toggleMode a {
+    color: var(--clr-accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+#toggleMode a:hover {
+    text-decoration: underline;
+}

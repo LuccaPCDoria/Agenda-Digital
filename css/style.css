@@ -1,201 +1,271 @@
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    display: flex;
-}
+/* ===================================================
+   SIDEBAR FIXA E RETRÁTIL
+=================================================== */
 
+/* Container principal fixo da sidebar */
 .sidebar {
-    width: 200px;
-    background-color: #34495e;
-    color: white;
-    padding: 1rem;
-    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    height: 100dvh;
+    padding: 1.5rem 1rem;
+    background-color: var(--clr-secondary);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    transition: width 0.3s ease;
 }
 
-.sidebar h3 {
+/* Área do logo sempre fixa e independente do menu */
+.sidebar .logo-wrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     margin-bottom: 1rem;
 }
 
+/* Texto do logo sem empurrar o menu */
+.sidebar .logo-text {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #ccc;
+    margin: 0;
+}
+
+/* Botão do menu hamburguer */
+
+.sidebar-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+.sidebar-toggle svg {
+    vertical-align: middle;
+}
+
+/* Lista de itens do menu */
 .sidebar ul {
     list-style: none;
     padding: 0;
-}
-
-.sidebar ul li {
-    margin-bottom: 1rem;
-}
-
-.sidebar ul li a,
-.sidebar ul li button {
-    color: white;
-    text-decoration: none;
-    background: none;
-    border: none;
-    font-size: 1rem;
-    cursor: pointer;
-}
-
-.main-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.5rem;
     flex-grow: 1;
-    padding: 2rem;
 }
 
-/*
-ESTILIZAÇÃO DOS CARDS DE NOTA
-*/
-
-/* Cards de nota */
-.nota-card {
-    background-color: #f4f4f4;
-    padding: 1rem;
-    border-left: 5px solid #3498db;
-    margin-bottom: 1rem;
-    border-radius: 8px;
-}
-
-/*
-ESTILIZAÇÃO DA PRIORIDADE DA TAREFA
-*/
-/* Prioridades de tarefa (visuais) */
-li:has(input[type="checkbox"][data-id]) {
-    padding: 0.5rem;
-    margin-bottom: 0.5rem;
-    border-left: 5px solid #bdc3c7;
-}
-
-li:has(small:contains("Alta")) {
-    border-left-color: #e74c3c;
-}
-li:has(small:contains("Média")) {
-    border-left-color: #f39c12;
-}
-li:has(small:contains("Baixa")) {
-    border-left-color: #2ecc71;
-}
-
-/*
-ESTILIZAÇÃO DA LISTA DE AGENDA
-*/
-/* Agenda */
-#listaAgenda li {
-    margin-bottom: 0.5rem;
-    background: #ecf0f1;
-    padding: 0.5rem;
-    border-left: 4px solid #34495e;
-}
-
-/*
-ESTILIZAÇÃO DA SIDEBAR DEIXANDO OS ITENS PARA PAGINA "ATIVOS"
-*/
-
-.sidebar a {
+/* Ícones e texto alinhados à esquerda */
+.sidebar ul li a {
     display: flex;
     align-items: center;
-    padding: 0.5rem;
-    border-radius: 6px;
-    color: white;
     text-decoration: none;
-    transition: background-color 0.3s ease;
+    color: #fff;
+    padding: 0.6rem 0.75rem;
+    border-radius: 6px;
+    gap: 0.5rem;
+    transition: background 0.3s ease;
+    justify-content: flex-start;
 }
 
-.sidebar a:hover {
-    background-color: #2c3e50;
+/* Menu recolhido */
+.sidebar.sidebar-fechada .logo-text,
+.sidebar.sidebar-fechada span {
+    display: none;
 }
 
-.sidebar a.active {
-    background-color: #1abc9c;
-    font-weight: bold;
+.sidebar.sidebar-fechada {
+    width: 77.969px;
+}
+.sidebar.sidebar-fechada ul li a {
+    justify-content: center;
 }
 
-/*
-ESTILIZAÇÃO PARA MODO ESCURO COM BOTÃO DE ALTERANANCIA
-*/
-
-body.dark-mode {
-    background-color: #121212;
-    color: #eee;
-}
-
-body.dark-mode .sidebar {
-    background-color: #1e1e1e;
-}
-
-body.dark-mode .sidebar a {
-    color: #eee;
-}
-
-body.dark-mode .sidebar a.active {
-    background-color: #3498db;
-}
-
-body.dark-mode .main-content {
-    background-color: #1a1a1a;
-}
-
+/* Modo escuro no final da sidebar */
 .toggle-theme {
-    margin-top: 2rem;
     background: none;
     color: white;
-    border: 1px solid #ccc;
-    padding: 0.3rem 1rem;
-    border-radius: 5px;
+    border: none;
     cursor: pointer;
+    margin-top: 2rem;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    justify-content: center;
+}
+/* Esconde o texto quando a sidebar está retraída */
+.sidebar.sidebar-fechada .theme-label {
+    display: none;
 }
 
-/*
-ESTILIZAÇÃO PARA ICONES E TRANSIÇÕES SUAVES DA SIDEBAR
-*/
-
-/* Ícones suaves */
-.sidebar a {
-    transition: all 0.3s ease-in-out;
+/* ===================================================
+   CONTEÚDO PRINCIPAL
+=================================================== */
+.main-content {
+    margin-left: 179.172px;
+    padding: 2rem;
+    flex: 1;
+    transition: margin-left 0.1s ease;
 }
 
-/* Cards e elementos */
-.nota-card,
+.sidebar.sidebar-fechada ~ .main-content {
+    margin-left: 70px;
+    transition: margin-left 0.1s ease;
+}
+
+section {
+    margin-bottom: 2rem;
+}
+
+h1,
+h2 {
+    margin-bottom: 0.75rem;
+}
+
+form {
+    margin-bottom: 1.5rem;
+}
+
+input,
+select,
+textarea,
+button {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.6rem;
+    border: 1px solid var(--clr-border);
+    border-radius: 6px;
+    margin-bottom: 0.8rem;
+    width: 100%;
+}
+
+button {
+    background-color: var(--clr-primary);
+    color: white;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background-color: #27ae60;
+}
+.sidebar a:hover {
+    background-color: #27ae60;
+}
+.active {
+    background-color: #27ae60;
+}
+
+/* Cards e listas */
+.card,
+#listaTarefas li,
 #listaAgenda li,
-#listaTarefas li {
-    transition: transform 0.2s ease, opacity 0.3s ease;
+#listaMetas li,
+.nota-card {
+    background-color: var(--clr-card);
+    border: 1px solid var(--clr-border);
+    border-left: 4px solid var(--clr-primary);
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.8rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+/* Cards e listas */
+main li {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+main li input {
+    width: auto;
 }
 
-.nota-card:hover,
-#listaAgenda li:hover,
-#listaTarefas li:hover {
-    transform: scale(1.02);
-    opacity: 0.95;
+main li button {
+    width: 50px;
+    margin: 0px;
 }
 
-/*
-ESTILIZAÇÃO PARA DISPOSITIVOS MOBILE COM MEDIA QUERY PARA DEIXAR
-O LAYOUTE RESPONSIVO
-*/
+/* =============================
+   CHECKBOX PERSONALIZADO COM ANIMAÇÃO
+============================= */
 
+.checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    user-select: none;
+    width: 100%;
+}
+
+/* Oculta o checkbox nativo */
+.checkbox-wrapper input[type="checkbox"] {
+    opacity: 0;
+    position: absolute;
+}
+
+/* Estilo da caixa do checkbox */
+.checkmark {
+    width: 24px;
+    height: 24px;
+    background-color: var(--clr-card);
+    border: 2px solid var(--clr-border);
+    border-radius: 6px;
+    position: relative;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+/* Animação do símbolo de check */
+.checkmark::after {
+    content: "";
+    position: absolute;
+    left: 6px;
+    top: 1.5px;
+    width: 6px;
+    height: 12px;
+    border: solid var(--clr-primary);
+    border-width: 0 2px 2px 0;
+    opacity: 0;
+    transform: scale(0.5) rotate(45deg);
+    transition: all 0.25s ease;
+}
+
+/* Ativo: exibe o check com transição */
+.checkbox-wrapper input[type="checkbox"]:checked + .checkmark {
+    background-color: var(--clr-card);
+    border-color: var(--clr-primary);
+}
+
+.checkbox-wrapper input[type="checkbox"]:checked + .checkmark::after {
+    opacity: 1;
+    transform: scale(1) rotate(45deg);
+}
+
+/* ===================================================
+   MEDIA QUERIES
+=================================================== */
 @media (max-width: 768px) {
-    body {
-        flex-direction: column;
-    }
-
-    .sidebar {
-        width: 100%;
-        height: auto;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-around;
-        padding: 1rem 0;
-    }
-
-    .sidebar ul {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 1rem;
-    }
-
     .main-content {
+        margin-left: 70px;
         padding: 1rem;
     }
 
-    .toggle-theme {
-        margin: 1rem auto;
+    .sidebar {
+        width: 70px;
+    }
+
+    .sidebar:not(.sidebar-fechada) {
+        width: 240px;
+    }
+
+    .sidebar-toggle {
+        align-self: center;
     }
 }
